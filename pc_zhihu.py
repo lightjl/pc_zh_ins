@@ -135,11 +135,17 @@ class zhihu:
         #print(self.df)
         self.df.to_excel(r'D:/pythonResouce/' + self.__classify + '.xls')
 
-    def sent_ins(self):
+    def sent_ins(self, begin=0, number=100):
+        i = 0
         urlHead = 'https://www.zhihu.com'
         for (index, row) in self.df.iterrows():
             if row[2] == "装修":
-                #print('%s %s %s' %(row[0], row[1], row[2]))
+                i += 1
+                if i < begin:
+                    continue
+                elif i >= begin+number:
+                    break
+                print('%s' %(row[0]))
                 self.ins.add_item(urlHead+row[1], title=row[0], selection=row[2])
 
     def parse_url_to_html(self, url):
@@ -192,7 +198,8 @@ class zhihu:
         pdfkit.from_file(htmls, 'a.pdf', options=options)
 
 zh = zhihu('https://www.zhihu.com/topic/19554051/top-answers', '装修', False)
-zh.sent_ins()
+#zh = zhihu('https://www.zhihu.com/topic/19629328/top-answers', '公务员考试', True)
+zh.sent_ins(1*7+1, 7)
 
 
 
